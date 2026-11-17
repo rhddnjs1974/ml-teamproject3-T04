@@ -57,7 +57,7 @@
       "val_f1": 0.709349593495935,
       "diff_vs_baseline": 0.0,
       "train_seconds": 0.3,
-      "public_f1": null,
+      "public_f1": 0.79405,
       "info": null
     }
   },
