@@ -56,11 +56,92 @@
     "baseline": {
       "val_f1": 0.709349593495935,
       "diff_vs_baseline": 0.0,
-      "train_seconds": 0.3,
+      "train_seconds": 1.7,
       "public_f1": 0.79405,
       "info": null
+    },
+    "model_a": {
+      "val_f1": 0.6872509960159362,
+      "diff_vs_baseline": -0.02209859747999876,
+      "train_seconds": 2.9,
+      "public_f1": null,
+      "info": {
+        "encoder": "1-layer BiGRU, hidden 128, over 100-d word embeddings learned from scratch",
+        "vocab_size": 5563,
+        "lr": 0.001,
+        "what_differs": "reference (encoder: BiGRU)",
+        "held_fixed": "split, labels, clean_text(), max length 64 tokens, seed 42, batch 32, 5 epochs with the lowest-val-loss epoch kept, AdamW + linear decay, dropout 0.2 + linear head with one logit, BCE loss, threshold 0.5",
+        "best_epoch": 4,
+        "history": [
+          {
+            "epoch": 1,
+            "val_loss": 0.5626,
+            "val_f1": 0.6233
+          },
+          {
+            "epoch": 2,
+            "val_loss": 0.5123,
+            "val_f1": 0.675
+          },
+          {
+            "epoch": 3,
+            "val_loss": 0.5059,
+            "val_f1": 0.6876
+          },
+          {
+            "epoch": 4,
+            "val_loss": 0.4996,
+            "val_f1": 0.6873
+          },
+          {
+            "epoch": 5,
+            "val_loss": 0.5247,
+            "val_f1": 0.6924
+          }
+        ]
+      }
+    },
+    "model_b": {
+      "val_f1": 0.7996108949416343,
+      "diff_vs_baseline": 0.09026130144569933,
+      "train_seconds": 45.0,
+      "public_f1": null,
+      "info": {
+        "encoder": "distilbert-base-uncased, fine-tuned, [CLS] vector",
+        "lr": 2e-05,
+        "what_differs": "encoder: BiGRU from scratch -> pretrained DistilBERT",
+        "held_fixed": "split, labels, clean_text(), max length 64 tokens, seed 42, batch 32, 5 epochs with the lowest-val-loss epoch kept, AdamW + linear decay, dropout 0.2 + linear head with one logit, BCE loss, threshold 0.5",
+        "best_epoch": 2,
+        "history": [
+          {
+            "epoch": 1,
+            "val_loss": 0.3797,
+            "val_f1": 0.7793
+          },
+          {
+            "epoch": 2,
+            "val_loss": 0.3716,
+            "val_f1": 0.7996
+          },
+          {
+            "epoch": 3,
+            "val_loss": 0.4013,
+            "val_f1": 0.7959
+          },
+          {
+            "epoch": 4,
+            "val_loss": 0.4432,
+            "val_f1": 0.7944
+          },
+          {
+            "epoch": 5,
+            "val_loss": 0.456,
+            "val_f1": 0.7978
+          }
+        ]
+      }
     }
   },
-  "best_model": "baseline",
-  "runtime_seconds": 0.5
+  "best_model": "model_b",
+  "runtime_seconds": 51.2
 }
