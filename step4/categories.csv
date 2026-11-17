@@ -1,31 +1,31 @@
-﻿no,id,error_type,reader,category
-1,3460,false positive,최재원,
-2,10113,false positive,최재원,
-3,10111,false positive,최재원,
-4,2846,false positive,최재원,
-5,8968,false positive,최재원,
-6,1175,false positive,김민성,
-7,3255,false positive,김민성,
-8,10650,false positive,김민성,
-9,643,false positive,김민성,
-10,6505,false positive,김민성,
-11,2866,false positive,차승준,
-12,1994,false positive,차승준,
-13,4611,false positive,차승준,
-14,1767,false positive,차승준,
-15,6821,false positive,차승준,
-16,4202,false negative,최재원,
-17,10289,false negative,최재원,
-18,5996,false negative,최재원,
-19,5213,false negative,최재원,
-20,9557,false negative,최재원,
-21,9593,false negative,김민성,
-22,1789,false negative,김민성,
-23,867,false negative,김민성,
-24,915,false negative,김민성,
-25,886,false negative,김민성,
-26,9484,false negative,차승준,
-27,9263,false negative,차승준,
-28,7260,false negative,차승준,
-29,1190,false negative,차승준,
-30,4233,false negative,차승준,
+﻿no,id,error_type,reader,category,category_ko
+1,3460,false positive,최재원,metaphorical use of a disaster word,재난 단어의 비유적 사용
+2,10113,false positive,최재원,past or hypothetical disaster,미래·과거 재난 언급
+3,10111,false positive,최재원,past or hypothetical disaster,미래·과거 재난 언급
+4,2846,false positive,최재원,ambiguous keyword or place name,애매한 키워드나 지명
+5,8968,false positive,최재원,sarcasm or joke,비꼬기·농담
+6,1175,false positive,김민성,news or headline quoting,뉴스/헤드라인 인용
+7,3255,false positive,김민성,"disaster word, no disaster event",재난 단어는 있지만 재난 사건이 아님
+8,10650,false positive,김민성,"disaster word, no disaster event",재난 단어는 있지만 재난 사건이 아님
+9,643,false positive,김민성,metaphorical use of a disaster word,재난 단어의 비유적 사용
+10,6505,false positive,김민성,"disaster word, no disaster event",재난 단어는 있지만 재난 사건이 아님
+11,2866,false positive,차승준,"too little information (spam, cut-off text)",정보 부족 (스팸·잘린 문장)
+12,1994,false positive,차승준,sarcasm or joke,비꼬기·농담
+13,4611,false positive,차승준,news or headline quoting,뉴스/헤드라인 인용
+14,1767,false positive,차승준,sarcasm or joke,비꼬기·농담
+15,6821,false positive,차승준,label appears wrong,라벨이 틀린 것 같음
+16,4202,false negative,최재원,label appears wrong,라벨이 틀린 것 같음
+17,10289,false negative,최재원,label appears wrong,라벨이 틀린 것 같음
+18,5996,false negative,최재원,label appears wrong,라벨이 틀린 것 같음
+19,5213,false negative,최재원,label appears wrong,라벨이 틀린 것 같음
+20,9557,false negative,최재원,label appears wrong,라벨이 틀린 것 같음
+21,9593,false negative,김민성,label appears wrong,라벨이 틀린 것 같음
+22,1789,false negative,김민성,label appears wrong,라벨이 틀린 것 같음
+23,867,false negative,김민성,label appears wrong,라벨이 틀린 것 같음
+24,915,false negative,김민성,label appears wrong,라벨이 틀린 것 같음
+25,886,false negative,김민성,label appears wrong,라벨이 틀린 것 같음
+26,9484,false negative,차승준,label appears wrong,라벨이 틀린 것 같음
+27,9263,false negative,차승준,label appears wrong,라벨이 틀린 것 같음
+28,7260,false negative,차승준,news or headline quoting,뉴스/헤드라인 인용
+29,1190,false negative,차승준,label appears wrong,라벨이 틀린 것 같음
+30,4233,false negative,차승준,"too little information (spam, cut-off text)",정보 부족 (스팸·잘린 문장)

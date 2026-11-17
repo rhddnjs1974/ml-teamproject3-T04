@@ -15,6 +15,7 @@ from baseline import build_baseline
 from config import ID_COL, MEMBERS, OUT_DIR, PUBLIC_F1, ROOT, SEED, TARGET, TEAM_ID, TEXT_COL
 from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
 from errors import plot_categories, plot_confusion, save_errors, select_errors
+from fixes import run_fixes
 from models import train_model_a, train_model_b
 
 
@@ -52,8 +53,9 @@ def main():
 
     # Step 2. TF-IDF 베이스라인 + Step 3. 모델 A, B
     runs = {}
-    for name, train_fn in [("baseline", lambda *a: build_baseline().fit(a[0], a[1])),
-                           ("model_a", train_model_a), ("model_b", train_model_b)]:
+    train_fns = {"baseline": lambda *a: build_baseline().fit(a[0], a[1]),
+                 "model_a": train_model_a, "model_b": train_model_b}
+    for name, train_fn in train_fns.items():
         t0 = time.time()
         try:
             model = train_fn(tr_x, tr_y, va_x, va_y)
@@ -82,6 +84,9 @@ def main():
     category_counts = plot_categories()
     print(f"[step4] {len(picked)} errors saved to step4/errors_30.csv ({error_counts})")
 
+    # Step 4. 가장 큰 두 카테고리에 대한 수정 실험 (최고 모델의 학습 함수로 다시 학습)
+    fixes = run_fixes(train_fns[best], runs[best]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
+
     output = {
         "project": 3,
         "team_id": TEAM_ID,
@@ -104,6 +109,7 @@ def main():
             "examples": [{"no": int(r.no), "id": int(r.id), "true": int(r.target), "pred": int(r.pred)}
                          for r in picked.itertuples()],
             "category_counts": category_counts,
+            "fixes": fixes,
         },
         "runtime_seconds": round(time.time() - start, 1),
     }
