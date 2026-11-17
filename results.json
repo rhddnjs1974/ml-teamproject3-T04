@@ -56,7 +56,7 @@
     "baseline": {
       "val_f1": 0.709349593495935,
       "diff_vs_baseline": 0.0,
-      "train_seconds": 1.7,
+      "train_seconds": 1.9,
       "public_f1": 0.79405,
       "info": null
     },
@@ -64,7 +64,7 @@
       "val_f1": 0.6872509960159362,
       "diff_vs_baseline": -0.02209859747999876,
       "train_seconds": 2.9,
-      "public_f1": null,
+      "public_f1": 0.76647,
       "info": {
         "encoder": "1-layer BiGRU, hidden 128, over 100-d word embeddings learned from scratch",
         "vocab_size": 5563,
@@ -104,8 +104,8 @@
     "model_b": {
       "val_f1": 0.7996108949416343,
       "diff_vs_baseline": 0.09026130144569933,
-      "train_seconds": 45.0,
-      "public_f1": null,
+      "train_seconds": 46.8,
+      "public_f1": 0.8345,
       "info": {
         "encoder": "distilbert-base-uncased, fine-tuned, [CLS] vector",
         "lr": 2e-05,
@@ -143,5 +143,194 @@
     }
   },
   "best_model": "model_b",
-  "runtime_seconds": 51.2
+  "step4": {
+    "model": "model_b",
+    "rule": "15 false positives + 15 false negatives of the best model on validation, sampled with seed 42",
+    "false_positives_total": 54,
+    "false_negatives_total": 152,
+    "examples": [
+      {
+        "no": 1,
+        "id": 3460,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 2,
+        "id": 10113,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 3,
+        "id": 10111,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 4,
+        "id": 2846,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 5,
+        "id": 8968,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 6,
+        "id": 1175,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 7,
+        "id": 3255,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 8,
+        "id": 10650,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 9,
+        "id": 643,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 10,
+        "id": 6505,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 11,
+        "id": 2866,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 12,
+        "id": 1994,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 13,
+        "id": 4611,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 14,
+        "id": 1767,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 15,
+        "id": 6821,
+        "true": 0,
+        "pred": 1
+      },
+      {
+        "no": 16,
+        "id": 4202,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 17,
+        "id": 10289,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 18,
+        "id": 5996,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 19,
+        "id": 5213,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 20,
+        "id": 9557,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 21,
+        "id": 9593,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 22,
+        "id": 1789,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 23,
+        "id": 867,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 24,
+        "id": 915,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 25,
+        "id": 886,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 26,
+        "id": 9484,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 27,
+        "id": 9263,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 28,
+        "id": 7260,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 29,
+        "id": 1190,
+        "true": 1,
+        "pred": 0
+      },
+      {
+        "no": 30,
+        "id": 4233,
+        "true": 1,
+        "pred": 0
+      }
+    ],
+    "category_counts": null
+  },
+  "runtime_seconds": 53.3
 }

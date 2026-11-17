@@ -1,0 +1,33 @@
+﻿no,id,keyword,text,target,pred,error_type
+1,3460,derailed,#Adani &amp; #Modi plan for mining derailed! Australia court blocks huge India-backed coal mine http://t.co/SjE59U2nNm via @YahooNews,0,1,false positive
+2,10113,upheaval,A look at state actions a year after FergusonÛªs upheaval  http://t.co/G5ZsRU0zVQ,0,1,false positive
+3,10111,upheaval,USW: 'The damage from abandoning the deal could well create a new level of uncertainty...economic upheaval &amp; military unrest',0,1,false positive
+4,2846,cyclone,"Blending the old with the new in #Vanuatu to prepare for future emergencies: 
+http://t.co/aFMKcFn1TL http://t.co/8QqzYZIAqf",0,1,false positive
+5,8968,storm,this storm????,0,1,false positive
+6,1175,blight,"Article by Michael Jackman at Metro Times Detroit:
+The group later downgraded the estimate to 37 square miles of... http://t.co/h31mmuduqt",0,1,false positive
+7,3255,demolish,Enugu Government to demolish illegal structures at International Conference Centre http://t.co/DaqszZuBUb,0,1,false positive
+8,10650,wounds,RT @DianneG: Gunshot wound #9 is in the bicep. only 1 of the 10 wounds that is not in the chest/torso area.  #KerrickTrial #JonathanFerrell,0,1,false positive
+9,643,arsonist,Trusting Iran to stop terrorism is like inviting an arsonist to join the fire brigade - Telegraph http://t.co/2Z2HTDjQZD,0,1,false positive
+10,6505,injuries,@nalathekoala As a health care professional that deals all gun violence sequalae I consider suicides injuries accidents and homicides,0,1,false positive
+11,2866,damage,Reusing advanced in life equipments in transit to drumming champaign damage: FdbDP,0,1,false positive
+12,1994,bush%20fires,One thing you can be sure of. There will never be bush fires in Scotland as the ground is always soaking wet????,0,1,false positive
+13,4611,emergency%20services,Emergency services unsure how to cope with loss of paging network http://t.co/UXqKIeqDyf,0,1,false positive
+14,1767,buildings%20burning,@PPFA At least they aren't burning buildings and looting stores.,0,1,false positive
+15,6821,loud%20bang,@SW_Trains strange loud impact bang noises under train to Epsom about to arrive #Wimbledon,0,1,false positive
+16,4202,drowned,Sadly before she could save humanity Ursula drowned in the drool of a protoshoggoth but at least she sort of died doing what she loved.,1,0,false negative
+17,10289,weapon,Please allow me to reiterate it's not the weapon it's the mindset of the individual! #professional #help! -LEGION! https://t.co/2lGTZkwMqW,1,0,false negative
+18,5996,hazardous,#foodscare #offers2go #NestleIndia slips into loss after #Magginoodle #ban unsafe and hazardous for #humanconsumption,1,0,false negative
+19,5213,fatality,@Truly_Stings Yo Dm me,1,0,false negative
+20,9557,threat,Meek Mill responds to DrakeÛªs OVO Fest set with wedgie threat http://t.co/qqSKYbARNg,1,0,false negative
+21,9593,thunder,@AsimTanvir @NemesisK_PES @KevR_7  Snow? Thunder and lightning?,1,0,false negative
+22,1789,buildings%20on%20fire,Such beautiful architecture in #NYC I love those fire escape routes on the buildings. #newyorkÛ_ https://t.co/fW1PtaElgV,1,0,false negative
+23,867,bioterror,USATODAY: On today's #frontpage: #Bioterror lab faced secret sanctions. #RickPerry doesn't make the cut for FoxNewÛ_ http://t.co/5uKOHk7SoB,1,0,false negative
+24,915,bioterrorism,@HowardU If 90BLKs&amp;8WHTs colluded 2 take WHT F @USAgov AUTH Hostage&amp;2 make her look BLK w/Bioterrorism&amp;use her lgl/org IDis ID still hers?,1,0,false negative
+25,886,bioterrorism,@DarrellIssa Does that 'great Iran deal' cover bioterrorism? You got cut off terrible of them. Keep up the good work.,1,0,false negative
+26,9484,terrorism,@KurtSchlichter  He's already done it by negotiating with the #1 state of terrorism in the World. What was his hurry in trying to get a deal,1,0,false negative
+27,9263,sunk,@SaintRobinho86 someone has to be at the bottom of every league. Tonight clearly demonstrated why the Lions are where they are - sunk!,1,0,false negative
+28,7260,nuclear%20disaster,#Obama signed up to a deal that far from making the world a safer place http://t.co/E0luGBL6pb via @upi #Iran #Nuclear #IranNuclearDeal,1,0,false negative
+29,1190,blizzard,@Ashayo @MsMiggi Hi Ashayo! I believe there will be VODs on YouTube after the presentation but there is nothing like seeing it live :),1,0,false negative
+30,4233,drowned,Jacksonville  family bands together as memorial is planned for  ... http://t.co/tilgurKv7Z,1,0,false negative
