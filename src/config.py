@@ -23,4 +23,6 @@ MEMBERS = [
 # Kaggle에 제출한 뒤 받은 Public F1 (코드가 알 수 없는 값이라 여기에 기록)
 PUBLIC_F1 = {
     "baseline": 0.79405,
+    "model_a": 0.76647,
+    "model_b": 0.83450,
 }

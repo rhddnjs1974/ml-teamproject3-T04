@@ -14,6 +14,7 @@ from sklearn.metrics import f1_score
 from baseline import build_baseline
 from config import ID_COL, MEMBERS, OUT_DIR, PUBLIC_F1, ROOT, SEED, TARGET, TEAM_ID, TEXT_COL
 from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
+from errors import plot_categories, plot_confusion, save_errors, select_errors
 from models import train_model_a, train_model_b
 
 
@@ -74,6 +75,13 @@ def main():
     pd.read_csv(OUT_DIR / "submissions" / f"{best}.csv").to_csv(ROOT / "submission.csv", index=False)
     print(f"best on validation: {best}")
 
+    # Step 4. 최고 모델의 오류 30개 선택 + 그림 1, (카테고리가 다 채워졌으면) 그림 2
+    picked, error_counts = select_errors(va, runs[best]["val_pred"])
+    save_errors(picked)
+    plot_confusion(va_y, runs[best]["val_pred"], best)
+    category_counts = plot_categories()
+    print(f"[step4] {len(picked)} errors saved to step4/errors_30.csv ({error_counts})")
+
     output = {
         "project": 3,
         "team_id": TEAM_ID,
@@ -89,6 +97,14 @@ def main():
             for name, r in runs.items()
         },
         "best_model": best,
+        "step4": {
+            "model": best,
+            "rule": "15 false positives + 15 false negatives of the best model on validation, sampled with seed 42",
+            **error_counts,
+            "examples": [{"no": int(r.no), "id": int(r.id), "true": int(r.target), "pred": int(r.pred)}
+                         for r in picked.itertuples()],
+            "category_counts": category_counts,
+        },
         "runtime_seconds": round(time.time() - start, 1),
     }
     with open(ROOT / "results.json", "w", encoding="utf-8") as f:
