@@ -1,0 +1,52 @@
+===== target = 1 (real disaster): 20 random tweets =====
+ 1. [id 5692] [keyword: floods] Nearly 50 thousand people affected by floods in #Paraguay ? http://t.co/aw23wXtyjB http://t.co/ABgct9VFUa
+ 2. [id 471] [keyword: armageddon] Vladimir Putin Issues Major Warning But Is It Too Late To Escape Armageddon?
+http://t.co/gBxafy1m1C
+ 3. [id 1753] [keyword: buildings%20burning] @DoctorFluxx @StefanEJones @spinnellii @themermacorn  No burning buildings and rob during a riot. That's embarrassing &amp; ruining this nation.
+ 4. [id 716] [keyword: attacked] Telnet attacked from 124.13.172.40 (STREAMYX-HOME-SOUTHERN MY)
+ 5. [id 4253] [keyword: drowning] LONDON IS DROWNING AND IIII LIVE BY THE RIVEEEEEER
+ 6. [id 4848] [keyword: evacuation] ÛÏA voluntary evacuation is being recommended at this timeÛ for Pickerel Lake cabins across highway from #Reidlake fire says MACA #NWT #YZF
+ 7. [id 4809] [keyword: evacuated] Gold Coast tram hit by fallen powerlines: UP to 30 people have been evacuated from a tram on the Gold Coast af... http://t.co/xpPQnYHiWC
+ 8. [id 10079] [keyword: typhoon] nbanews Soudelor Typhoon Soudelor is taking dead aim at Taiwan and is expected to make landfall Friday according to the Joint TyphoonÛ_
+ 9. [id 1892] [keyword: burning] We will be burning up like neon lights??????
+10. [id 1259] [keyword: blood] Ain't no hoe in my blood
+11. [id 6358] [keyword: hostages] C-130 specially modified to land in a stadium and rescue hostages in Iran in 1980:    submitt... http://t.co/nbugSMqLRG #aviationaddicts
+12. [id 6434] [keyword: hurricane] Ashley and I on going to hurricane harbor Friday. ?? http://t.co/ScEfPFvAEU
+13. [id 3937] [keyword: devastated] Obama Declares Disaster for Typhoon-Devastated Saipan:  http://t.co/M6LvKXl9ii
+14. [id 8908] [keyword: snowstorm] @Habbo bring back games from the past. Snowstorm. Tic tac toe. Battleships. Fast food. Matchwood.
+15. [id 3510] [keyword: derailment] #TeamFollowBack Madhya Pradesh Train Derailment: Village Youth Saved Many Lives  #FollowBack
+16. [id 3075] [keyword: deaths] real magic in real life:
+
+women went missing in Ohio town the focus of FBI probe after strange deaths and... http://t.co/6m0YNJWbc9
+17. [id 8924] [keyword: snowstorm] Sassy city girl country hunk stranded in Smoky Mountain snowstorm #AoMS http://t.co/HDJS9RNtJ4 #ibooklove #bookboost
+18. [id 6383] [keyword: hostages] Cont'd- #Sinjar: referring to a 40-pg document the group put together on the movt of #Yazidi hostages in the days following #IS massacre [2]
+19. [id 6336] [keyword: hostages] #hot  C-130 specially modified to land in a stadium and rescue hostages in Iran in 1980 http://t.co/wpGvAyfkBQ #prebreak #best
+20. [id 907] [keyword: bioterrorism] To fight bioterrorism sir.
+
+===== target = 0 (not a disaster): 20 random tweets =====
+ 1. [id 5260] [keyword: fatality] Everyday is a near death fatality for me on the road. Thank god is on my side.??
+ 2. [id 5937] [keyword: hazard] #Lifestyle Û÷It makes me sickÛª: Baby clothes deemed a Û÷hazardÛª http://t.co/0XrfVidxA2 http://t.co/oIHwgEZDCk
+ 3. [id 6586] [keyword: inundated] @Lenn_Len Probably. We are inundated with them most years!
+ 4. [id 8753] [keyword: siren] A demoness with the voice of an angel. Like a siren's call beckoning me to the void. Don't ?? on thisÛ_ https://t.co/nPS3xpBKaQ
+ 5. [id 6494] [keyword: injuries] Next Man Up---AH SCREW THIS! I'm so tired of injuries.  
+
+What happened to Camp Cupcake? More like Camp Cramp and Break.
+ 6. [id 706] [keyword: attacked] I cant believe a fucking cis female is going to somehow claim to be offended over a transgendered female who's been attacked by media
+ 7. [id 5554] [keyword: flattened] Imagine getting flattened by Kurt Zouma
+ 8. [id 8440] [keyword: sandstorm] Now playing: Darude - Sandstorm - radio edit http://t.co/DUdAIrBBPo http://t.co/padosfyXnM
+ 9. [id 10243] [keyword: volcano] The Architect Behind Kanye WestÛªs Volcano https://t.co/MUSBIk7EJf
+10. [id 396] [keyword: apocalypse] I'm gonna fight Taylor as soon as I get there.
+11. [id 4345] [keyword: dust%20storm] New Mad Max Screenshots Show Off a Lovely Dust Storm Combat Magnum Opus http://t.co/MUdgU1pUNS http://t.co/AQxwOLbCfq
+12. [id 3464] [keyword: derailed] Of what use exactly is the national Assembly? Honestly they are worthless. We are derailed.
+13. [id 52] [keyword: ablaze] Crying out for more! Set me ablaze
+14. [id 4028] [keyword: disaster] @Hollyorange8 my day has been a disaster of emotions
+15. [id 732] [keyword: attacked] I attacked Robot-lvl 19 and I've earned a total of 6615434 free satoshis! http://t.co/DMLJ1aGoTw #robotcoingame #Bitcoin #FreeBitcoin
+16. [id 4680] [keyword: engulfed] Do you feel engulfed with low self-image? Take the quiz: http://t.co/YzDmouXQBO http://t.co/PeXfgawrG1
+17. [id 7771] [keyword: police] @BrandonMulcahy @fpine Here's the story http://t.co/TgXutUoyHl
+18. [id 7842] [keyword: quarantine] Reddit Will Now Quarantine Offensive Content http://t.co/LOdOrmTfSq
+19. [id 413] [keyword: apocalypse] the apocalypse is upon us
+20. [id 10472] [keyword: wild%20fires] Man selling WILD MORELS at Ambleside Farmr Mart.Sun.-MUSHROOM forageSECRET IS TO KNOW WHAT TREES they grow under &amp; BEST AFTER FOREST FIRES
+
+===== 읽고 나서 직접 적기: 내가 판단할 때 쓸 규칙 2개 =====
+규칙 1: 
+규칙 2: 

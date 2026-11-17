@@ -1,0 +1,66 @@
+{
+  "project": 3,
+  "team_id": "T04",
+  "members": [
+    {
+      "student_id": "20212788",
+      "name": "최재원",
+      "role": "Steps 0-2 (data, duplicates, split, TF-IDF baseline), Step 6 (local vs leaderboard)"
+    },
+    {
+      "student_id": "20225259",
+      "name": "김민성",
+      "role": "Step 5 (label noise), Step 7 (extension)"
+    },
+    {
+      "student_id": "20223843",
+      "name": "차승준",
+      "role": "Step 3 (models A and B), report"
+    }
+  ],
+  "seed": 42,
+  "split_sizes": {
+    "train": 5535,
+    "val": 1384
+  },
+  "data_table": [
+    {
+      "set": "train.csv as downloaded",
+      "rows": 7613,
+      "positive_rate": 0.4297
+    },
+    {
+      "set": "after duplicate handling",
+      "rows": 6919,
+      "positive_rate": 0.4069
+    },
+    {
+      "set": "training part",
+      "rows": 5535,
+      "positive_rate": 0.4069
+    },
+    {
+      "set": "validation part",
+      "rows": 1384,
+      "positive_rate": 0.4068
+    }
+  ],
+  "duplicates": {
+    "duplicate_groups": 300,
+    "rows_in_duplicate_groups": 964,
+    "conflicting_groups": 66,
+    "tied_groups_dropped": 30,
+    "rows_dropped": 694
+  },
+  "models": {
+    "baseline": {
+      "val_f1": 0.709349593495935,
+      "diff_vs_baseline": 0.0,
+      "train_seconds": 0.3,
+      "public_f1": null,
+      "info": null
+    }
+  },
+  "best_model": "baseline",
+  "runtime_seconds": 0.5
+}
