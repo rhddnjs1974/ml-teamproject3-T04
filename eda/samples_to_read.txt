@@ -47,6 +47,4 @@ What happened to Camp Cupcake? More like Camp Cramp and Break.
 19. [id 413] [keyword: apocalypse] the apocalypse is upon us
 20. [id 10472] [keyword: wild%20fires] Man selling WILD MORELS at Ambleside Farmr Mart.Sun.-MUSHROOM forageSECRET IS TO KNOW WHAT TREES they grow under &amp; BEST AFTER FOREST FIRES
 
-===== 읽고 나서 직접 적기: 내가 판단할 때 쓸 규칙 2개 =====
-규칙 1: 
-규칙 2: 
+===== 읽고 나서 세운 규칙 2개는 eda/step1_rules.md 에 적는다 (이 파일은 다시 실행하면 덮어써짐) =====
