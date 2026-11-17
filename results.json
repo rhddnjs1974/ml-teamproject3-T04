@@ -56,14 +56,14 @@
     "baseline": {
       "val_f1": 0.709349593495935,
       "diff_vs_baseline": 0.0,
-      "train_seconds": 1.9,
+      "train_seconds": 1.5,
       "public_f1": 0.79405,
       "info": null
     },
     "model_a": {
       "val_f1": 0.6872509960159362,
       "diff_vs_baseline": -0.02209859747999876,
-      "train_seconds": 2.9,
+      "train_seconds": 2.8,
       "public_f1": 0.76647,
       "info": {
         "encoder": "1-layer BiGRU, hidden 128, over 100-d word embeddings learned from scratch",
@@ -104,7 +104,7 @@
     "model_b": {
       "val_f1": 0.7996108949416343,
       "diff_vs_baseline": 0.09026130144569933,
-      "train_seconds": 46.8,
+      "train_seconds": 43.4,
       "public_f1": 0.8345,
       "info": {
         "encoder": "distilbert-base-uncased, fine-tuned, [CLS] vector",
@@ -330,7 +330,40 @@
         "pred": 0
       }
     ],
-    "category_counts": null
+    "category_counts": {
+      "label appears wrong": 14,
+      "sarcasm or joke": 3,
+      "news or headline quoting": 3,
+      "disaster word, no disaster event": 3,
+      "metaphorical use of a disaster word": 2,
+      "past or hypothetical disaster": 2,
+      "too little information (spam, cut-off text)": 2,
+      "ambiguous keyword or place name": 1
+    },
+    "fixes": {
+      "fix1_drop_suspected_noisy_labels": {
+        "val_f1": 0.7893175074183977,
+        "diff_vs_step4_model": -0.010293387523236608,
+        "rows_removed": 187,
+        "removed_positive": 175,
+        "rows_left": 5348,
+        "rule": "5-fold OOF TF-IDF+LR on the training part, own-label prob < 0.25",
+        "target_category": "label appears wrong",
+        "target_category_size": 14,
+        "target_category_now_correct": 0,
+        "all_30_now_correct": 4
+      },
+      "fix2_mask_keyword": {
+        "val_f1": 0.7677543186180422,
+        "diff_vs_step4_model": -0.03185657632359207,
+        "train_texts_changed": 4770,
+        "rule": "replace the row's keyword with [MASK] in training and validation text",
+        "target_category": "disaster word, no disaster event",
+        "target_category_size": 3,
+        "target_category_now_correct": 0,
+        "all_30_now_correct": 3
+      }
+    }
   },
-  "runtime_seconds": 53.3
+  "runtime_seconds": 143.4
 }
