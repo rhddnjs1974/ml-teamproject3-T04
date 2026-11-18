@@ -17,6 +17,7 @@ from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
 from errors import plot_categories, plot_confusion, save_errors, select_errors
 from fixes import run_fixes
 from models import train_model_a, train_model_b
+from relabel import run_relabel
 
 
 def write_submission(test, pred, name):
@@ -87,6 +88,9 @@ def main():
     # Step 4. 가장 큰 두 카테고리에 대한 수정 실험 (최고 모델의 학습 함수로 다시 학습)
     fixes = run_fixes(train_fns[best], runs[best]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
 
+    # Step 7. 학습 라벨만 LLM 라벨(확신도 3)로 바꿔 다시 학습, 검증 라벨은 그대로 (파일이 없으면 건너뜀)
+    relabel = run_relabel(train_fns, runs, tr, tr_x, tr_y, va, va_x, va_y)
+
     output = {
         "project": 3,
         "team_id": TEAM_ID,
@@ -111,6 +115,7 @@ def main():
             "category_counts": category_counts,
             "fixes": fixes,
         },
+        "step7": {"relabel": relabel},
         "runtime_seconds": round(time.time() - start, 1),
     }
     with open(ROOT / "results.json", "w", encoding="utf-8") as f:

@@ -26,3 +26,9 @@ PUBLIC_F1 = {
     "model_a": 0.76647,
     "model_b": 0.83450,
 }
+
+# Step 7: LLM first-pass labels for the training part (no header: id,label,confidence).
+LLM_LABELS_FILE = ROOT / "step7" / "llm_labels.csv"
+# Confidence levels used for relabelling. Fixed before any result was seen; the audit of 30 hand-read tweets
+# supported level 3 only (see report, Step 5).
+RELABEL_MIN_CONFS = (3,)
