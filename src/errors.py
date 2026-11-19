@@ -4,7 +4,7 @@
   거짓 양성(정답 0, 예측 1) 15개 + 거짓 음성(정답 1, 예측 0) 15개를 seed 42 로 무작위 추출.
 
 사람이 하는 일: step4/categories.csv 의 category, reader 칸을 직접 채운다.
-  - 이 파일은 처음 한 번만 만들어지고, 그 뒤로는 코드가 절대 덮어쓰지 않는다.
+  - errors_30.csv 와 categories.csv 는 처음 한 번만 만들어지고, 그 뒤로는 코드가 절대 덮어쓰지 않는다.
   - 30개가 모두 채워지면 main.py 가 그림 2 (카테고리별 막대)를 그린다.
 """
 import matplotlib
@@ -22,24 +22,42 @@ FIG_DIR = ROOT / "figures"
 
 
 def select_errors(va, va_pred):
-    """틀린 validation 트윗에서 FP 15 + FN 15 를 seed 42 로 뽑는다."""
+    """틀린 validation 트윗에서 FP 15 + FN 15 를 seed 42 로 뽑는다.
+
+    GPU 가 다르면 모델 B 의 예측이 조금 달라져 다른 30개가 뽑힐 수 있다. 사람이 읽고 분류한 30개가
+    바뀌면 안 되므로, step4/errors_30.csv 가 이미 있으면 그 30개 id 를 그대로 쓰고(분할 파일과 같은 방식)
+    이번 실행의 예측만 새로 붙인다. 이번 실행에서 더 이상 틀리지 않는 트윗은 개수를 기록한다.
+    """
     df = va[["id", "keyword", TEXT_COL, TARGET]].copy()
     df["pred"] = va_pred
     fp = df[(df[TARGET] == 0) & (df["pred"] == 1)].assign(error_type="false positive")
     fn = df[(df[TARGET] == 1) & (df["pred"] == 0)].assign(error_type="false negative")
+    counts = {"false_positives_total": int(len(fp)), "false_negatives_total": int(len(fn))}
+
+    frozen = STEP4_DIR / "errors_30.csv"
+    if frozen.exists():
+        kept = pd.read_csv(frozen, encoding="utf-8-sig")[["no", "id", "error_type"]]
+        picked = kept.merge(df, on="id", how="left")
+        still = int(((picked[TARGET] == 0) & (picked["pred"] == 1) | (picked[TARGET] == 1) & (picked["pred"] == 0)).sum())
+        counts["frozen_from"] = "step4/errors_30.csv"
+        counts["still_misclassified_in_this_run"] = still
+        if still < len(picked):
+            print(f"[step4] warning: {len(picked) - still} of the frozen 30 are predicted correctly in this run")
+        return picked[["no", "id", "keyword", TEXT_COL, TARGET, "pred", "error_type"]], counts
+
     picked = pd.concat([
         fp.sample(min(N_PER_TYPE, len(fp)), random_state=SEED),
         fn.sample(min(N_PER_TYPE, len(fn)), random_state=SEED),
     ]).reset_index(drop=True)
     picked.insert(0, "no", range(1, len(picked) + 1))
-    counts = {"false_positives_total": int(len(fp)), "false_negatives_total": int(len(fn))}
     return picked, counts
 
 
 def save_errors(picked):
-    """사람이 읽을 목록(매번 새로 씀)과 카테고리 입력 파일(처음 한 번만 만듦)."""
+    """사람이 읽을 목록과 카테고리 입력 파일. 둘 다 처음 한 번만 만들고 그 뒤로는 덮어쓰지 않는다."""
     STEP4_DIR.mkdir(exist_ok=True)
-    picked.to_csv(STEP4_DIR / "errors_30.csv", index=False, encoding="utf-8-sig")
+    if not (STEP4_DIR / "errors_30.csv").exists():
+        picked.to_csv(STEP4_DIR / "errors_30.csv", index=False, encoding="utf-8-sig")
     cat_file = STEP4_DIR / "categories.csv"
     if not cat_file.exists():
         sheet = picked[["no", "id", "error_type"]].copy()

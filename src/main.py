@@ -77,16 +77,19 @@ def main():
     best = max(runs, key=lambda k: runs[k]["val_f1"])
     pd.read_csv(OUT_DIR / "submissions" / f"{best}.csv").to_csv(ROOT / "submission.csv", index=False)
     print(f"best on validation: {best}")
+    # Step 4 모델은 Step 3 표(베이스라인, 모델 A, 모델 B) 안에서 고른다.
+    # Step 7 에서 모델을 더 추가해도 사람이 읽은 30개의 기준 모델이 바뀌지 않게 하기 위함.
+    step4_model = max([k for k in ("baseline", "model_a", "model_b") if k in runs], key=lambda k: runs[k]["val_f1"])
 
     # Step 4. 최고 모델의 오류 30개 선택 + 그림 1, (카테고리가 다 채워졌으면) 그림 2
-    picked, error_counts = select_errors(va, runs[best]["val_pred"])
+    picked, error_counts = select_errors(va, runs[step4_model]["val_pred"])
     save_errors(picked)
-    plot_confusion(va_y, runs[best]["val_pred"], best)
+    plot_confusion(va_y, runs[step4_model]["val_pred"], step4_model)
     category_counts = plot_categories()
     print(f"[step4] {len(picked)} errors saved to step4/errors_30.csv ({error_counts})")
 
     # Step 4. 가장 큰 두 카테고리에 대한 수정 실험 (최고 모델의 학습 함수로 다시 학습)
-    fixes = run_fixes(train_fns[best], runs[best]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
+    fixes = run_fixes(train_fns[step4_model], runs[step4_model]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
 
     # Step 7. 학습 라벨만 LLM 라벨(확신도 3)로 바꿔 다시 학습, 검증 라벨은 그대로 (파일이 없으면 건너뜀)
     relabel = run_relabel(train_fns, runs, tr, tr_x, tr_y, va, va_x, va_y)
@@ -107,8 +110,9 @@ def main():
         },
         "best_model": best,
         "step4": {
-            "model": best,
-            "rule": "15 false positives + 15 false negatives of the best model on validation, sampled with seed 42",
+            "model": step4_model,
+            "rule": "15 false positives + 15 false negatives of the best Step 3 model on validation, sampled with seed 42 "
+                    "in the first run and frozen in step4/errors_30.csv",
             **error_counts,
             "examples": [{"no": int(r.no), "id": int(r.id), "true": int(r.target), "pred": int(r.pred)}
                          for r in picked.itertuples()],
