@@ -17,6 +17,7 @@ from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
 from errors import plot_categories, plot_confusion, save_errors, select_errors
 from fixes import run_fixes
 from models import train_model_a, train_model_b, train_model_c
+from gap import analyse_gap
 from relabel import run_relabel
 
 
@@ -105,6 +106,9 @@ def main():
     step7_runs = {**runs, "model_c": {"val_f1": c_f1, "val_pred": c_pred}}
     relabel = run_relabel(step7_fns, step7_runs, tr, tr_x, tr_y, va, va_x, va_y)
 
+    # Step 6. 로컬 val F1 과 public F1 의 차이를 설명할 근거
+    step6 = analyse_gap(tr, va, test, runs, PUBLIC_F1)
+
     output = {
         "project": 3,
         "team_id": TEAM_ID,
@@ -130,6 +134,7 @@ def main():
             "category_counts": category_counts,
             "fixes": fixes,
         },
+        "step6": step6,
         "step7": {"model_c": model_c_result, "relabel": relabel},
         "runtime_seconds": round(time.time() - start, 1),
     }
