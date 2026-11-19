@@ -16,7 +16,7 @@ from sklearn.metrics import f1_score
 
 from config import LLM_LABELS_FILE, OUT_DIR, RELABEL_MIN_CONFS
 
-RELABEL_MODELS = ("baseline", "model_a", "model_b")
+RELABEL_MODELS = ("baseline", "model_a", "model_b", "model_c")
 
 
 def load_llm_labels(path=LLM_LABELS_FILE):

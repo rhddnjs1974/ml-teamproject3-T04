@@ -16,7 +16,7 @@ from config import ID_COL, MEMBERS, OUT_DIR, PUBLIC_F1, ROOT, SEED, TARGET, TEAM
 from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
 from errors import plot_categories, plot_confusion, save_errors, select_errors
 from fixes import run_fixes
-from models import train_model_a, train_model_b
+from models import train_model_a, train_model_b, train_model_c
 from relabel import run_relabel
 
 
@@ -91,8 +91,19 @@ def main():
     # Step 4. 가장 큰 두 카테고리에 대한 수정 실험 (최고 모델의 학습 함수로 다시 학습)
     fixes = run_fixes(train_fns[step4_model], runs[step4_model]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
 
+    # Step 7. 모델 C(bert-base). best/제출 파일/Step 4 선택에는 쓰이지 않는다 (위에서 이미 끝남).
+    t0 = time.time()
+    model_c = train_model_c(tr_x, tr_y, va_x, va_y)
+    c_pred = np.asarray(model_c.predict(va_x)).astype(int)
+    c_f1 = float(f1_score(va_y, c_pred))
+    model_c_result = {"val_f1": c_f1, "diff_vs_baseline": c_f1 - base_f1, "diff_vs_model_b": c_f1 - runs["model_b"]["val_f1"],
+                      "train_seconds": round(time.time() - t0, 1), "info": getattr(model_c, "info", None)}
+    print(f"[model_c] val F1 = {c_f1:.4f} ({model_c_result['train_seconds']}s)")
+
     # Step 7. 학습 라벨만 LLM 라벨(확신도 3)로 바꿔 다시 학습, 검증 라벨은 그대로 (파일이 없으면 건너뜀)
-    relabel = run_relabel(train_fns, runs, tr, tr_x, tr_y, va, va_x, va_y)
+    step7_fns = {**train_fns, "model_c": train_model_c}
+    step7_runs = {**runs, "model_c": {"val_f1": c_f1, "val_pred": c_pred}}
+    relabel = run_relabel(step7_fns, step7_runs, tr, tr_x, tr_y, va, va_x, va_y)
 
     output = {
         "project": 3,
@@ -119,7 +130,7 @@ def main():
             "category_counts": category_counts,
             "fixes": fixes,
         },
-        "step7": {"relabel": relabel},
+        "step7": {"model_c": model_c_result, "relabel": relabel},
         "runtime_seconds": round(time.time() - start, 1),
     }
     with open(ROOT / "results.json", "w", encoding="utf-8") as f:

@@ -47,6 +47,7 @@ GRU_LR = 1e-3
 
 BERT_NAME = "distilbert-base-uncased"
 BERT_LR = 2e-5
+BERT_BASE_NAME = "bert-base-uncased"   # model C (Step 7): same recipe, 12 layers instead of DistilBERT's 6
 
 HELD_FIXED = ("split, labels, clean_text(), max length 64 tokens, seed 42, batch 32, 5 epochs "
               "with the lowest-val-loss epoch kept, AdamW + linear decay, dropout 0.2 + linear head "
@@ -94,12 +95,12 @@ class GRUClassifier(nn.Module):
 
 
 class BertClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self, name=BERT_NAME):
         super().__init__()
         from transformers import AutoModel
-        self.encoder = AutoModel.from_pretrained(BERT_NAME)
+        self.encoder = AutoModel.from_pretrained(name)
         self.drop = nn.Dropout(DROPOUT)
-        self.head = nn.Linear(self.encoder.config.dim, 1)
+        self.head = nn.Linear(self.encoder.config.hidden_size, 1)
 
     def forward(self, ids, mask):
         cls = self.encoder(input_ids=ids, attention_mask=mask).last_hidden_state[:, 0]
@@ -166,15 +167,26 @@ def train_model_a(tr_texts, tr_y, va_texts, va_y):
     return fit(GRUClassifier(len(vocab)), vocab, GRU_LR, tr_texts, tr_y, va_texts, va_y, info)
 
 
-def train_model_b(tr_texts, tr_y, va_texts, va_y):
+def _train_bert(name, what_differs, tr_texts, tr_y, va_texts, va_y):
     from transformers import AutoTokenizer
     seed_everything()
-    tok = AutoTokenizer.from_pretrained(BERT_NAME)
+    tok = AutoTokenizer.from_pretrained(name)
 
     def encode(texts):
         enc = tok(list(texts), max_length=MAX_LEN, truncation=True, padding="max_length", return_tensors="pt")
         return enc["input_ids"], enc["attention_mask"]
 
-    info = {"encoder": f"{BERT_NAME}, fine-tuned, [CLS] vector", "lr": BERT_LR,
-            "what_differs": "encoder: BiGRU from scratch -> pretrained DistilBERT", "held_fixed": HELD_FIXED}
-    return fit(BertClassifier(), encode, BERT_LR, tr_texts, tr_y, va_texts, va_y, info)
+    info = {"encoder": f"{name}, fine-tuned, [CLS] vector", "lr": BERT_LR,
+            "what_differs": what_differs, "held_fixed": HELD_FIXED}
+    return fit(BertClassifier(name), encode, BERT_LR, tr_texts, tr_y, va_texts, va_y, info)
+
+
+def train_model_b(tr_texts, tr_y, va_texts, va_y):
+    return _train_bert(BERT_NAME, "encoder: BiGRU from scratch -> pretrained DistilBERT",
+                       tr_texts, tr_y, va_texts, va_y)
+
+
+def train_model_c(tr_texts, tr_y, va_texts, va_y):
+    """Step 7 third model: model B with a larger pretrained encoder (bert-base-uncased); nothing else changes."""
+    return _train_bert(BERT_BASE_NAME, "encoder: pretrained DistilBERT (6 layers) -> bert-base-uncased (12 layers)",
+                       tr_texts, tr_y, va_texts, va_y)

@@ -38,5 +38,5 @@ python src/main.py           # duplicates, split, baseline, models A/B, submissi
 
 `step7/llm_labels.csv` (no header: `id,label,confidence`) holds first-pass LLM labels for the training part only.
 `python src/main.py` reads it, replaces the training label where the LLM disagrees with confidence 3
-(`RELABEL_MIN_CONFS` in `src/config.py`), retrains the baseline, model A and model B, and writes the validation F1
+(`RELABEL_MIN_CONFS` in `src/config.py`), retrains the baseline and models A, B and C (model C = bert-base-uncased, Step 7), and writes the validation F1
 against the unchanged validation labels to `results.json` under `step7`. If the file is missing the step is skipped.
