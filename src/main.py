@@ -14,7 +14,7 @@ from sklearn.metrics import f1_score
 from baseline import build_baseline
 from config import ID_COL, MEMBERS, OUT_DIR, PUBLIC_F1, ROOT, SEED, TARGET, TEAM_ID, TEXT_COL
 from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
-from errors import plot_categories, plot_confusion, save_errors, select_errors
+from errors import label_noise_estimate, plot_categories, plot_confusion, save_errors, select_errors
 from fixes import run_fixes
 from models import train_model_a, train_model_b, train_model_c
 from gap import analyse_gap
@@ -109,6 +109,10 @@ def main():
     # Step 6. 로컬 val F1 과 public F1 의 차이를 설명할 근거
     step6 = analyse_gap(tr, va, test, runs, PUBLIC_F1)
 
+    # Step 5. 30개 중 라벨 문제 개수, validation 전체 추정, F1 상한 (사람이 채운 categories.csv 기준)
+    step5 = label_noise_estimate(picked, error_counts, va_y)
+    print(f"[step5] {step5}")
+
     output = {
         "project": 3,
         "team_id": TEAM_ID,
@@ -134,6 +138,7 @@ def main():
             "category_counts": category_counts,
             "fixes": fixes,
         },
+        "step5": step5,
         "step6": step6,
         "step7": {"model_c": model_c_result, "relabel": relabel},
         "runtime_seconds": round(time.time() - start, 1),

@@ -102,3 +102,35 @@ def plot_categories():
     fig.savefig(FIG_DIR / "fig2_categories.png", dpi=150)
     plt.close(fig)
     return counts.to_dict()
+
+
+def label_noise_estimate(picked, counts, va_y):
+    """Step 5: 30개 중 라벨 문제 개수와, 그것을 전체 validation 으로 늘린 추정 및 F1 상한.
+
+    규칙: 사람이 'label appears wrong' 으로 분류한 트윗을 라벨 문제로 센다.
+    FP 15개, FN 15개를 따로 뽑았으므로 각 비율에 전체 FP, FN 개수를 곱해 가중 추정한다.
+    상한: 라벨이 틀린 행에서는 '진짜'를 맞히는 분류기도 관찰된 라벨과 어긋난다고 보고 F1 을 계산한다.
+    """
+    path = STEP4_DIR / "categories.csv"
+    if not path.exists():
+        return None
+    cats = pd.read_csv(path, encoding="utf-8-sig")[["id", "category"]]
+    df = picked[["id", "error_type"]].merge(cats, on="id")
+    is_label = df["category"] == "label appears wrong"
+    fp, fn = df["error_type"] == "false positive", df["error_type"] == "false negative"
+    rate_fp = float(is_label[fp].mean()) if fp.any() else 0.0
+    rate_fn = float(is_label[fn].mean()) if fn.any() else 0.0
+    est_fp = rate_fp * counts["false_positives_total"]
+    est_fn = rate_fn * counts["false_negatives_total"]
+    positives = int((va_y == 1).sum())
+    tp = positives - est_fn
+    ceiling = 2 * tp / (2 * tp + est_fp + est_fn)
+    return {
+        "rule": "tweets the readers put in 'label appears wrong'",
+        "label_problems_in_30": int(is_label.sum()),
+        "in_false_positives": f"{int(is_label[fp].sum())}/{int(fp.sum())}",
+        "in_false_negatives": f"{int(is_label[fn].sum())}/{int(fn.sum())}",
+        "estimated_wrong_labels_in_validation": round(est_fp + est_fn, 1),
+        "estimated_share_of_validation": round((est_fp + est_fn) / len(va_y), 4),
+        "f1_ceiling_estimate": round(ceiling, 4),
+    }
