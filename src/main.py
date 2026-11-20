@@ -16,8 +16,8 @@ from config import ID_COL, MEMBERS, OUT_DIR, PUBLIC_F1, ROOT, SEED, TARGET, TEAM
 from data import clean_text, deduplicate, describe, load_raw, make_or_load_split
 from errors import label_noise_estimate, plot_categories, plot_confusion, save_errors, select_errors
 from fixes import run_fixes
-from models import train_model_a, train_model_b, train_model_c
 from gap import analyse_gap
+from models import train_model_a, train_model_b, train_model_c
 from relabel import run_relabel
 
 
@@ -92,6 +92,11 @@ def main():
     # Step 4. 가장 큰 두 카테고리에 대한 수정 실험 (최고 모델의 학습 함수로 다시 학습)
     fixes = run_fixes(train_fns[step4_model], runs[step4_model]["val_pred"], tr, va, tr_x, tr_y, va_x, va_y)
 
+    # Step 5. 30개 중 라벨 문제 개수, validation 전체 추정, F1 상한 (사람이 채운 categories.csv 기준)
+    step5 = label_noise_estimate(error_counts, va_y)
+    # Step 6. 로컬 val F1 과 public F1 의 차이를 설명할 근거 (재학습 없음)
+    step6 = analyse_gap(runs, PUBLIC_F1, raw_train, clean_train, tr, va, test, va_x, te_x, va_y)
+
     # Step 7. 모델 C(bert-base). best/제출 파일/Step 4 선택에는 쓰이지 않는다 (위에서 이미 끝남).
     t0 = time.time()
     model_c = train_model_c(tr_x, tr_y, va_x, va_y)
@@ -105,13 +110,6 @@ def main():
     step7_fns = {**train_fns, "model_c": train_model_c}
     step7_runs = {**runs, "model_c": {"val_f1": c_f1, "val_pred": c_pred}}
     relabel = run_relabel(step7_fns, step7_runs, tr, tr_x, tr_y, va, va_x, va_y)
-
-    # Step 6. 로컬 val F1 과 public F1 의 차이를 설명할 근거
-    step6 = analyse_gap(tr, va, test, runs, PUBLIC_F1)
-
-    # Step 5. 30개 중 라벨 문제 개수, validation 전체 추정, F1 상한 (사람이 채운 categories.csv 기준)
-    step5 = label_noise_estimate(picked, error_counts, va_y)
-    print(f"[step5] {step5}")
 
     output = {
         "project": 3,

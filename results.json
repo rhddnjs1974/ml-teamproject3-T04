@@ -56,14 +56,14 @@
     "baseline": {
       "val_f1": 0.709349593495935,
       "diff_vs_baseline": 0.0,
-      "train_seconds": 1.5,
+      "train_seconds": 2.0,
       "public_f1": 0.79405,
       "info": null
     },
     "model_a": {
       "val_f1": 0.6872509960159362,
       "diff_vs_baseline": -0.02209859747999876,
-      "train_seconds": 2.8,
+      "train_seconds": 3.1,
       "public_f1": 0.76647,
       "info": {
         "encoder": "1-layer BiGRU, hidden 128, over 100-d word embeddings learned from scratch",
@@ -104,7 +104,7 @@
     "model_b": {
       "val_f1": 0.7996108949416343,
       "diff_vs_baseline": 0.09026130144569933,
-      "train_seconds": 43.4,
+      "train_seconds": 47.7,
       "public_f1": 0.8345,
       "info": {
         "encoder": "distilbert-base-uncased, fine-tuned, [CLS] vector",
@@ -145,9 +145,11 @@
   "best_model": "model_b",
   "step4": {
     "model": "model_b",
-    "rule": "15 false positives + 15 false negatives of the best model on validation, sampled with seed 42",
+    "rule": "15 false positives + 15 false negatives of the best Step 3 model on validation, sampled with seed 42 in the first run and frozen in step4/errors_30.csv",
     "false_positives_total": 54,
     "false_negatives_total": 152,
+    "frozen_from": "step4/errors_30.csv",
+    "still_misclassified_in_this_run": 30,
     "examples": [
       {
         "no": 1,
@@ -365,5 +367,190 @@
       }
     }
   },
-  "runtime_seconds": 143.4
+  "step5": {
+    "rule": "a tweet counts when its reader judged the label wrong and the model's prediction right",
+    "val_rows": 1384,
+    "val_positives": 563,
+    "false_positives_total": 54,
+    "false_negatives_total": 152,
+    "readings": {
+      "strict": {
+        "count_of_30": 11,
+        "fp_marked": "1/15",
+        "fn_marked": "10/15",
+        "label_problems_est": 104.9,
+        "ceiling_f1": 0.898,
+        "fn_share_95ci": [
+          0.417,
+          0.848
+        ],
+        "ceiling_f1_range_from_fn_ci": [
+          0.8676,
+          0.9372
+        ]
+      },
+      "as_assigned": {
+        "count_of_30": 14,
+        "fp_marked": "1/15",
+        "fn_marked": "13/15",
+        "label_problems_est": 135.3,
+        "ceiling_f1": 0.8644,
+        "fn_share_95ci": [
+          0.621,
+          0.963
+        ],
+        "ceiling_f1_range_from_fn_ci": [
+          0.8475,
+          0.9053
+        ]
+      },
+      "lenient": {
+        "count_of_30": 15,
+        "fp_marked": "1/15",
+        "fn_marked": "14/15",
+        "label_problems_est": 145.5,
+        "ceiling_f1": 0.8527,
+        "fn_share_95ci": [
+          0.702,
+          0.988
+        ],
+        "ceiling_f1_range_from_fn_ci": [
+          0.843,
+          0.8922
+        ]
+      }
+    }
+  },
+  "step6": {
+    "positive_rate": {
+      "train_csv_raw": 0.4297,
+      "after_duplicate_handling": 0.4069,
+      "validation": 0.4068,
+      "removed_duplicate_rows": 0.647
+    },
+    "duplicates": {
+      "test_rows": 3263,
+      "test_rows_with_copy_in_train_csv": 400,
+      "test_rows_with_copy_in_training_part": 323,
+      "test_rows_with_copy_in_validation_part": 62,
+      "validation_rows_with_copy_in_training_part": 0,
+      "removed_copies_of_validation_tweets": 103,
+      "removed_copies_positive_rate": 0.6796
+    },
+    "threshold": "0.5 for every model, not tuned on validation",
+    "kaggle_fit": "every Kaggle file comes from the training-part fit (5,535 rows), not a refit on train.csv",
+    "models": {
+      "baseline": {
+        "val_f1": 0.7093,
+        "val_f1_at_raw_positive_rate": 0.714,
+        "val_f1_with_removed_copies_back": 0.7409,
+        "val_predicted_positive_rate": 0.3042,
+        "test_predicted_positive_rate": 0.32,
+        "test_copies_agree_with_training_label": 0.9412
+      },
+      "model_a": {
+        "val_f1": 0.6873,
+        "val_f1_at_raw_positive_rate": 0.6932,
+        "val_f1_with_removed_copies_back": 0.7163,
+        "val_predicted_positive_rate": 0.3186,
+        "test_predicted_positive_rate": 0.3353,
+        "test_copies_agree_with_training_label": 0.9071
+      },
+      "model_b": {
+        "val_f1": 0.7996,
+        "val_f1_at_raw_positive_rate": 0.8034,
+        "val_f1_with_removed_copies_back": 0.8195,
+        "val_predicted_positive_rate": 0.336,
+        "test_predicted_positive_rate": 0.3616,
+        "test_copies_agree_with_training_label": 0.9505
+      }
+    },
+    "preprocessing": {
+      "unknown_word_share_validation": 0.1164,
+      "unknown_word_share_test": 0.1145
+    }
+  },
+  "step7": {
+    "model_c": {
+      "val_f1": 0.7980487804878049,
+      "diff_vs_baseline": 0.08869918699186996,
+      "diff_vs_model_b": -0.0015621144538293663,
+      "train_seconds": 130.3,
+      "info": {
+        "encoder": "bert-base-uncased, fine-tuned, [CLS] vector",
+        "lr": 2e-05,
+        "what_differs": "encoder: pretrained DistilBERT (6 layers) -> bert-base-uncased (12 layers)",
+        "held_fixed": "split, labels, clean_text(), max length 64 tokens, seed 42, batch 32, 5 epochs with the lowest-val-loss epoch kept, AdamW + linear decay, dropout 0.2 + linear head with one logit, BCE loss, threshold 0.5",
+        "best_epoch": 1,
+        "history": [
+          {
+            "epoch": 1,
+            "val_loss": 0.3695,
+            "val_f1": 0.798
+          },
+          {
+            "epoch": 2,
+            "val_loss": 0.376,
+            "val_f1": 0.8061
+          },
+          {
+            "epoch": 3,
+            "val_loss": 0.4467,
+            "val_f1": 0.791
+          },
+          {
+            "epoch": 4,
+            "val_loss": 0.5161,
+            "val_f1": 0.7875
+          },
+          {
+            "epoch": 5,
+            "val_loss": 0.5449,
+            "val_f1": 0.788
+          }
+        ]
+      }
+    },
+    "relabel": {
+      "llm_conf_ge_3": {
+        "rule": "training rows where the LLM label differs from the label and LLM confidence >= 3; the LLM label replaces the training label; validation labels unchanged",
+        "rows_changed": 604,
+        "changed_0_to_1": 17,
+        "changed_1_to_0": 587,
+        "train_positive_rate_before": 0.4069,
+        "train_positive_rate_after": 0.3039,
+        "models": {
+          "baseline": {
+            "val_f1_original_labels": 0.709349593495935,
+            "val_f1_relabelled": 0.6267605633802817,
+            "diff": -0.08258903011565322,
+            "val_predicted_positive_rate_original": 0.3042,
+            "val_predicted_positive_rate_relabelled": 0.2088
+          },
+          "model_a": {
+            "val_f1_original_labels": 0.6872509960159362,
+            "val_f1_relabelled": 0.658254468980021,
+            "diff": -0.028996527035915154,
+            "val_predicted_positive_rate_original": 0.3186,
+            "val_predicted_positive_rate_relabelled": 0.2803
+          },
+          "model_b": {
+            "val_f1_original_labels": 0.7996108949416343,
+            "val_f1_relabelled": 0.7569803516028956,
+            "diff": -0.042630543338738724,
+            "val_predicted_positive_rate_original": 0.336,
+            "val_predicted_positive_rate_relabelled": 0.2919
+          },
+          "model_c": {
+            "val_f1_original_labels": 0.7980487804878049,
+            "val_f1_relabelled": 0.7613168724279835,
+            "diff": -0.036731908059821405,
+            "val_predicted_positive_rate_original": 0.3338,
+            "val_predicted_positive_rate_relabelled": 0.2955
+          }
+        }
+      }
+    }
+  },
+  "runtime_seconds": 428.9
 }

@@ -7,6 +7,8 @@
   - errors_30.csv 와 categories.csv 는 처음 한 번만 만들어지고, 그 뒤로는 코드가 절대 덮어쓰지 않는다.
   - 30개가 모두 채워지면 main.py 가 그림 2 (카테고리별 막대)를 그린다.
 """
+import math
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -104,33 +106,67 @@ def plot_categories():
     return counts.to_dict()
 
 
-def label_noise_estimate(picked, counts, va_y):
-    """Step 5: 30개 중 라벨 문제 개수와, 그것을 전체 validation 으로 늘린 추정 및 F1 상한.
+# ---------------------------------------------------------------- Step 5
+LABEL_CAT = "label appears wrong"
+# Hand judgments from the Step 5 reading (report, Section 5): borderline tweets about terrorism and the Iran deal
+# with no real event. The strict reading does not count them; the lenient one also counts no. 28.
+STRICT_EXCLUDE_IDS = (867, 886, 9484)
+LENIENT_EXTRA_IDS = (7260,)
 
-    규칙: 사람이 'label appears wrong' 으로 분류한 트윗을 라벨 문제로 센다.
-    FP 15개, FN 15개를 따로 뽑았으므로 각 비율에 전체 FP, FN 개수를 곱해 가중 추정한다.
-    상한: 라벨이 틀린 행에서는 '진짜'를 맞히는 분류기도 관찰된 라벨과 어긋난다고 보고 F1 을 계산한다.
+
+def _f1(tp, fp, fn):
+    return 2 * tp / (2 * tp + fp + fn)
+
+
+def _wilson(k, n, z=1.96):
+    p = k / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return centre - half, centre + half
+
+
+def _ceiling(fp_share, fn_share, fp_total, fn_total, n_pos):
+    wrong_neg = fp_share * fp_total   # observed 0, should be 1
+    wrong_pos = fn_share * fn_total   # observed 1, should be 0
+    return {"label_problems_est": round(wrong_neg + wrong_pos, 1),
+            "ceiling_f1": round(_f1(n_pos - wrong_pos, wrong_neg, wrong_pos), 4)}
+
+
+def label_noise_estimate(error_counts, va_y):
+    """Step 5: 30개 중 라벨 문제 개수, 전체 validation 으로 늘린 추정, 그리고 F1 상한.
+
+    규칙: 읽은 사람이 'label appears wrong' 으로 분류한 트윗(라벨이 틀렸고 모델 예측이 맞다고 판단)을 센다.
+    FP 15개, FN 15개를 따로 뽑았지만 모델은 FN 을 훨씬 많이 내므로, 오류 종류별 비율에 전체 FP, FN 개수를 곱한다.
+    상한: 라벨이 틀린 행에서는 진짜 라벨을 맞히는 분류기도 관찰된 라벨과 어긋난다고 보고 F1 을 계산한다.
+    strict / as_assigned / lenient 는 경계 사례를 세는 세 가지 읽기이고, FN 비율에는 Wilson 95% 구간을 붙인다.
+    categories.csv 가 없으면 None.
     """
-    path = STEP4_DIR / "categories.csv"
-    if not path.exists():
+    if not (STEP4_DIR / "categories.csv").exists():
         return None
-    cats = pd.read_csv(path, encoding="utf-8-sig")[["id", "category"]]
-    df = picked[["id", "error_type"]].merge(cats, on="id")
-    is_label = df["category"] == "label appears wrong"
-    fp, fn = df["error_type"] == "false positive", df["error_type"] == "false negative"
-    rate_fp = float(is_label[fp].mean()) if fp.any() else 0.0
-    rate_fn = float(is_label[fn].mean()) if fn.any() else 0.0
-    est_fp = rate_fp * counts["false_positives_total"]
-    est_fn = rate_fn * counts["false_negatives_total"]
-    positives = int((va_y == 1).sum())
-    tp = positives - est_fn
-    ceiling = 2 * tp / (2 * tp + est_fp + est_fn)
-    return {
-        "rule": "tweets the readers put in 'label appears wrong'",
-        "label_problems_in_30": int(is_label.sum()),
-        "in_false_positives": f"{int(is_label[fp].sum())}/{int(fp.sum())}",
-        "in_false_negatives": f"{int(is_label[fn].sum())}/{int(fn.sum())}",
-        "estimated_wrong_labels_in_validation": round(est_fp + est_fn, 1),
-        "estimated_share_of_validation": round((est_fp + est_fn) / len(va_y), 4),
-        "f1_ceiling_estimate": round(ceiling, 4),
+    cats = pd.read_csv(STEP4_DIR / "categories.csv", encoding="utf-8-sig")
+    fp_total, fn_total = error_counts["false_positives_total"], error_counts["false_negatives_total"]
+    n_pos = int(va_y.sum())
+    is_fp = cats["error_type"] == "false positive"
+    marked = cats["category"] == LABEL_CAT
+    readings = {
+        "strict": marked & ~cats["id"].isin(STRICT_EXCLUDE_IDS),
+        "as_assigned": marked,
+        "lenient": marked | cats["id"].isin(LENIENT_EXTRA_IDS),
     }
+    out = {"rule": "a tweet counts when its reader judged the label wrong and the model's prediction right",
+           "val_rows": int(len(va_y)), "val_positives": n_pos,
+           "false_positives_total": fp_total, "false_negatives_total": fn_total, "readings": {}}
+    for name, mask in readings.items():
+        k_fp, n_fp = int((mask & is_fp).sum()), int(is_fp.sum())
+        k_fn, n_fn = int((mask & ~is_fp).sum()), int((~is_fp).sum())
+        entry = {"count_of_30": k_fp + k_fn, "fp_marked": f"{k_fp}/{n_fp}", "fn_marked": f"{k_fn}/{n_fn}",
+                 **_ceiling(k_fp / n_fp, k_fn / n_fn, fp_total, fn_total, n_pos)}
+        lo, hi = _wilson(k_fn, n_fn)
+        entry["fn_share_95ci"] = [round(lo, 3), round(hi, 3)]
+        entry["ceiling_f1_range_from_fn_ci"] = [_ceiling(k_fp / n_fp, s, fp_total, fn_total, n_pos)["ceiling_f1"]
+                                                for s in (hi, lo)]
+        out["readings"][name] = entry
+    r = out["readings"]["as_assigned"]
+    print(f"[step5] {r['count_of_30']}/30 label problems -> about {r['label_problems_est']} of "
+          f"{fp_total + fn_total} validation errors, ceiling F1 {r['ceiling_f1']}")
+    return out
